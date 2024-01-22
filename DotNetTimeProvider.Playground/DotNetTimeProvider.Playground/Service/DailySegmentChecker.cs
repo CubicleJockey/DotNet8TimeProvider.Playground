@@ -17,10 +17,7 @@ public class DailySegmentChecker
     /// </summary>
     /// <param name="timeProvider">TimeProvider object that can be faked for testing or use real-time.</param>
     /// <exception cref="ArgumentNullException">Time Provider is empty.</exception>
-    public DailySegmentChecker(TimeProvider timeProvider)
-    {
-        this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
-    }
+    public DailySegmentChecker(TimeProvider timeProvider) => this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
 
     /// <summary>
     /// Morning is 12:00AM - 12:00PM
