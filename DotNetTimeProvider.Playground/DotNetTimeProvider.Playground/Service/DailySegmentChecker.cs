@@ -1,7 +1,4 @@
-﻿using System.Data;
-using System.Diagnostics.CodeAnalysis;
-
-namespace DotNetTimeProvider.Playground.Service;
+﻿namespace DotNetTimeProvider.Playground.Service;
 
 public class DailySegmentChecker
 {
@@ -29,19 +26,21 @@ public class DailySegmentChecker
     /// Morning is 12:00AM - 12:00PM
     /// </summary>
     /// <returns>True if in morning timeframe, else false.</returns>
-    public bool IsMorning()
+    public bool IsMorning(bool useLocal = false)
     {
-        var now = timeProvider.GetLocalNow();
+        var now = GetNow(useLocal);
         return now.Hour is >= 0 and < 12;
     }
+
+    
 
     /// <summary>
     /// Afternoon is 12:00PM - 5:00PM
     /// </summary>
     /// <returns>True if in afternoon timeframe, else false.</returns>
-    public bool IsAfternoon()
+    public bool IsAfternoon(bool useLocal = false)
     {
-        var now = timeProvider.GetLocalNow();
+        var now = GetNow(useLocal);
         return now.Hour is >= 12 and < 17;
     }
 
@@ -49,9 +48,9 @@ public class DailySegmentChecker
     /// Evening is 5:00PM - 9:00PM
     /// </summary>
     /// <returns>True if it is evening timeframe, else false.</returns>
-    public bool IsEvening()
+    public bool IsEvening(bool useLocal = false)
     {
-        var now = timeProvider.GetLocalNow();
+        var now = GetNow(useLocal);
         return now.Hour is >= 17 and < 21;
     }
 
@@ -59,9 +58,18 @@ public class DailySegmentChecker
     /// Night is 9:00PM - 12:00AM
     /// </summary>
     /// <returns>True if it is night timeframe, else false.</returns>
-    public bool IsNight()
+    public bool IsNight(bool useLocal = false)
     {
-        var now = timeProvider.GetLocalNow();
+        var now = GetNow(useLocal);
         return now.Hour is >= 21 or < 0;
     }
+
+    #region Helper Methods
+
+    private DateTimeOffset GetNow(bool useLocal)
+    {
+        return useLocal ? timeProvider.GetLocalNow() : timeProvider.GetUtcNow();
+    }
+
+    #endregion Helper Methods
 }
