@@ -28,9 +28,7 @@ public class DailySegmentChecker
         var now = GetNow(useLocal);
         return now.Hour is >= 0 and < 12;
     }
-
     
-
     /// <summary>
     /// Afternoon is 12:00PM - 5:00PM
     /// </summary>
