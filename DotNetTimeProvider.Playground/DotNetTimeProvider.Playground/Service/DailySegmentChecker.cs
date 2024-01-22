@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetTimeProvider.Playground.Service;
 
@@ -11,6 +12,11 @@ public class DailySegmentChecker
     ///
     /// Normally people dependency injected DateTime to do DateTime testing per method.
     /// This will use the TimeProvider provided only once for the entire object.
+    ///
+    ///
+    /// NOTE: The method timeframes can shift depending on who is using it or the season. These timeframes
+    ///       are picked purely for demonstration purposes.
+    /// 
     /// </summary>
     /// <param name="timeProvider">TimeProvider object that can be faked for testing or use real-time.</param>
     /// <exception cref="ArgumentNullException">Time Provider is empty.</exception>
@@ -19,23 +25,43 @@ public class DailySegmentChecker
         this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
+    /// <summary>
+    /// Morning is 12:00AM - 12:00PM
+    /// </summary>
+    /// <returns>True if in morning timeframe, else false.</returns>
     public bool IsMorning()
     {
-        throw new NotImplementedException("Oh noes n' stuff!");
+        var now = timeProvider.GetLocalNow();
+        return now.Hour is >= 0 and < 12;
     }
 
+    /// <summary>
+    /// Afternoon is 12:00PM - 5:00PM
+    /// </summary>
+    /// <returns>True if in afternoon timeframe, else false.</returns>
     public bool IsAfternoon()
     {
-        throw new NotImplementedException("Oh noes n' stuff!");
+        var now = timeProvider.GetLocalNow();
+        return now.Hour is >= 12 and < 17;
     }
 
+    /// <summary>
+    /// Evening is 5:00PM - 9:00PM
+    /// </summary>
+    /// <returns>True if it is evening timeframe, else false.</returns>
     public bool IsEvening()
     {
-        throw new NotImplementedException("Oh noes n' stuff!");
+        var now = timeProvider.GetLocalNow();
+        return now.Hour is >= 17 and < 21;
     }
 
+    /// <summary>
+    /// Night is 9:00PM - 12:00AM
+    /// </summary>
+    /// <returns>True if it is night timeframe, else false.</returns>
     public bool IsNight()
     {
-        throw new NotImplementedException("Oh noes n' stuff!");
+        var now = timeProvider.GetLocalNow();
+        return now.Hour is >= 21 or < 0;
     }
 }
